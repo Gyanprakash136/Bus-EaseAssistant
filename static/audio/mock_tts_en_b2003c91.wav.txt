@@ -1,0 +1,4 @@
+Mock TTS audio for: Hi! Ask me about buses - like 'Where is bus 101A?' or 'Buses from City Center to Airport'.
+Language: en
+Voice: None
+Generated: 2025-09-20T02:36:07.782034

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bus Assistant - Continuous Voice</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .status.ready { background: #e8f5e8; color: #2e7d2e; }
+        .status.listening { 
+            background: #e3f2fd; 
+            color: #1976d2;
+            animation: pulse 1.5s infinite;
+        }
+        .status.processing { background: #fff3e0; color: #f57c00; }
+        .status.speaking { 
+            background: #f3e5f5; 
+            color: #7b1fa2;
+            animation: speaking 0.8s infinite;
+        }
+        .status.error { background: #ffebee; color: #c62828; }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(25, 118, 210, 0.3); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes speaking {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+        
+        .messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+        
+        .message {
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 12px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        
+        .message.user {
+            background: #e3f2fd;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .message.assistant {
+            background: #e8f5e8;
+            margin-right: auto;
+        }
+        
+        .message.system {
+            background: #f5f5f5;
+            margin: 0 auto;
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+        
+        .btn.primary { background: #667eea; color: white; }
+        .btn.success { background: #4caf50; color: white; }
+        .btn.warning { background: #ff9800; color: white; }
+        .btn.danger { background: #f44336; color: white; }
+        
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .input-section input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .input-section input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .language-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .language-badge {
+            padding: 5px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        
+        .voice-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ccc;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .voice-indicator.active {
+            background: #4caf50;
+            animation: pulse 1s infinite;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; margin: 10px; }
+            .header h1 { font-size: 2rem; }
+            .controls { flex-direction: column; }
+            .btn { min-width: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚌 AI Bus Assistant</h1>
+            <p class="subtitle">Continuous Voice Interface - Just Speak!</p>
+        </div>
+        
+        <div id="status" class="status ready">
+            Click "Start Voice Assistant" to begin continuous listening
+        </div>
+        
+        <div class="language-indicator">
+            <span>Language:</span>
+            <span id="languageBadge" class="language-badge">Auto-Detect</span>
+            <div id="voiceIndicator" class="voice-indicator"></div>
+        </div>
+        
+        <div id="messages" class="messages"></div>
+        
+        <div class="controls">
+            <button id="startBtn" class="btn primary">🎤 Start Voice Assistant</button>
+            <button id="pauseBtn" class="btn warning" disabled>⏸️ Pause Listening</button>
+            <button id="stopBtn" class="btn danger" disabled>⏹️ Stop Assistant</button>
+        </div>
+        
+        <div class="input-section">
+            <input type="text" id="textInput" placeholder="Or type your question here..." disabled>
+            <button id="sendBtn" class="btn primary" disabled>Send</button>
+        </div>
+        
+        <div class="footer">
+            Continuous listening • Auto language detection • Professional TTS • Just speak naturally!
+        </div>
+    </div>
+
+    <script>
+        class ContinuousVoiceAssistant {
+            constructor(baseUrl = 'http://localhost:8000') {
+                this.baseUrl = baseUrl;
+                this.isListening = false;
+                this.isPaused = false;
+                this.isProcessing = false;
+                this.isSpeaking = false;
+                this.currentLanguage = 'Auto-Detect';
+                this.mediaRecorder = null;
+                this.audioChunks = [];
+                this.isInitialized = false;
+                this.silenceTimer = null;
+                this.audioContext = null;
+                this.analyser = null;
+                this.dataArray = null;
+                this.continuousListening = false;
+            }
+
+            // Start continuous voice assistant
+            async startVoiceAssistant() {
+                try {
+                    this.updateStatus('Initializing AI Assistant...', 'processing');
+                    
+                    // Start conversation
+                    const response = await fetch(`${this.baseUrl}/api/v1/conversation/start`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            client_id: `user_${Date.now()}`,
+                            preferred_language: null
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.isInitialized = true;
+                        this.currentLanguage = data.detected_language.toUpperCase();
+                        this.updateLanguageBadge(this.currentLanguage);
+                        
+                        // Play greeting audio
+                        this.updateStatus('Playing greeting...', 'speaking');
+                        this.isSpeaking = true;
+                        
+                        if (data.greeting_audio_url) {
+                            await this.playAudio(data.greeting_audio_url);
+                        }
+                        
+                        this.displayMessage(data.greeting_text, 'assistant');
+                        this.isSpeaking = false;
+                        
+                        // Enable controls
+                        document.getElementById('pauseBtn').disabled = false;
+                        document.getElementById('stopBtn').disabled = false;
+                        document.getElementById('textInput').disabled = false;
+                        document.getElementById('sendBtn').disabled = false;
+                        document.getElementById('startBtn').textContent = '✅ Voice Active';
+                        document.getElementById('startBtn').disabled = true;
+                        
+                        // Start continuous listening
+                        await this.startContinuousListening();
+                        
+                        return data;
+                    } else {
+                        throw new Error('Failed to start conversation');
+                    }
+                } catch (error) {
+                    console.error('❌ Start error:', error);
+                    this.updateStatus('Error starting AI. Try again.', 'error');
+                    return null;
+                }
+            }
+
+            // Start continuous listening mode
+            async startContinuousListening() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            sampleRate: 16000
+                        }
+                    });
+
+                    this.continuousListening = true;
+                    this.setupVoiceActivityDetection(stream);
+                    this.updateStatus('Listening continuously... Just speak!', 'listening');
+                    this.updateVoiceIndicator(true);
+
+                    // Main continuous listening loop
+                    this.listenContinuously(stream);
+
+                } catch (error) {
+                    console.error('❌ Continuous listening error:', error);
+                    this.updateStatus('Microphone access denied', 'error');
+                    this.displayMessage('Please allow microphone access and try again.', 'system');
+                }
+            }
+
+            // Continuous listening loop
+            async listenContinuously(stream) {
+                while (this.continuousListening && !this.isPaused) {
+                    if (this.isProcessing || this.isSpeaking) {
+                        await this.sleep(100);
+                        continue;
+                    }
+
+                    try {
+                        // Wait for voice activity
+                        await this.waitForVoiceActivity();
+                        
+                        if (!this.continuousListening || this.isPaused) break;
+
+                        // Record the speech
+                        await this.recordSpeech(stream);
+                        
+                    } catch (error) {
+                        console.error('Listening loop error:', error);
+                        await this.sleep(1000);
+                    }
+                }
+
+                // Cleanup when loop ends
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+            }
+
+            // Wait for voice activity detection
+            async waitForVoiceActivity() {
+                return new Promise((resolve) => {
+                    const checkVoice = () => {
+                        if (!this.continuousListening || this.isPaused || this.isProcessing || this.isSpeaking) {
+                            resolve();
+                            return;
+                        }
+
+                        const hasVoice = this.detectVoiceActivity();
+                        
+                        if (hasVoice) {
+                            this.updateStatus('Voice detected! Recording...', 'listening');
+                            resolve();
+                        } else {
+                            setTimeout(checkVoice, 100);
+                        }
+                    };
+                    
+                    checkVoice();
+                });
+            }
+
+            // Record speech until silence
+            async recordSpeech(stream) {
+                return new Promise((resolve) => {
+                    this.audioChunks = [];
+                    
+                    this.mediaRecorder = new MediaRecorder(stream, {
+                        mimeType: 'audio/webm;codecs=opus'
+                    });
+
+                    this.mediaRecorder.ondataavailable = (event) => {
+                        this.audioChunks.push(event.data);
+                    };
+
+                    this.mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                        await this.processAudioFile(audioBlob);
+                        resolve();
+                    };
+
+                    this.mediaRecorder.start(100);
+
+                    // Monitor for silence
+                    let silenceCount = 0;
+                    const maxSilence = 15; // 1.5 seconds of silence
+                    const maxRecording = 100; // 10 seconds max
+
+                    let recordingCount = 0;
+                    const silenceCheck = setInterval(() => {
+                        recordingCount++;
+
+                        if (!this.continuousListening || recordingCount >= maxRecording) {
+                            clearInterval(silenceCheck);
+                            if (this.mediaRecorder.state !== 'inactive') {
+                                this.mediaRecorder.stop();
+                            }
+                            return;
+                        }
+
+                        const hasVoice = this.detectVoiceActivity();
+                        
+                        if (hasVoice) {
+                            silenceCount = 0;
+                        } else {
+                            silenceCount++;
+                        }
+
+                        if (silenceCount >= maxSilence) {
+                            clearInterval(silenceCheck);
+                            if (this.mediaRecorder.state !== 'inactive') {
+                                this.mediaRecorder.stop();
+                            }
+                        }
+                    }, 100);
+                });
+            }
+
+            // Setup voice activity detection
+            setupVoiceActivityDetection(stream) {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const source = this.audioContext.createMediaStreamSource(stream);
+                    this.analyser = this.audioContext.createAnalyser();
+                    source.connect(this.analyser);
+                    
+                    this.analyser.fftSize = 512;
+                    const bufferLength = this.analyser.frequencyBinCount;
+                    this.dataArray = new Uint8Array(bufferLength);
+                } catch (error) {
+                    console.error('VAD setup error:', error);
+                }
+            }
+
+            // Detect voice activity
+            detectVoiceActivity() {
+                if (!this.analyser || !this.dataArray) return false;
+                
+                this.analyser.getByteFrequencyData(this.dataArray);
+                
+                let sum = 0;
+                for (let i = 0; i < this.dataArray.length; i++) {
+                    sum += this.dataArray[i];
+                }
+                const average = sum / this.dataArray.length;
+                
+                return average > 20; // Adjust threshold as needed
+            }
+
+            // Process audio file
+            async processAudioFile(audioBlob) {
+                if (this.isProcessing || !this.continuousListening) return;
+                
+                this.isProcessing = true;
+                this.updateStatus('Processing your speech...', 'processing');
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('audio', audioBlob, 'recording.wav');
+                    formData.append('detect_language', 'true');
+
+                    const response = await fetch(`${this.baseUrl}/api/v1/voice/process`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Show transcription
+                        const transcription = data.transcription;
+                        this.displayMessage(transcription.text, 'user');
+                        
+                        // Update language
+                        if (transcription.detected_language) {
+                            this.currentLanguage = transcription.detected_language.toUpperCase();
+                            this.updateLanguageBadge(this.currentLanguage);
+                        }
+                        
+                        // Show AI response
+                        const aiResponse = data.response;
+                        this.displayMessage(aiResponse.text, 'assistant');
+                        
+                        // Play audio response
+                        this.updateStatus('AI responding...', 'speaking');
+                        this.isSpeaking = true;
+                        
+                        if (aiResponse.audio_url) {
+                            await this.playAudio(aiResponse.audio_url);
+                        }
+                        
+                        this.isSpeaking = false;
+                        
+                        // Resume listening
+                        if (this.continuousListening && !this.isPaused) {
+                            this.updateStatus('Listening continuously... Speak again!', 'listening');
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ Processing error:', error);
+                    this.displayMessage('Sorry, I could not process that. Please try again.', 'assistant');
+                } finally {
+                    this.isProcessing = false;
+                }
+            }
+
+            // Process text query
+            async processTextQuery(text) {
+                if (this.isProcessing) return;
+                
+                this.isProcessing = true;
+                this.updateStatus('Processing text query...', 'processing');
+                this.displayMessage(text, 'user');
+                
+                try {
+                    const response = await fetch(`${this.baseUrl}/api/v1/voice/query`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            text: text,
+                            detect_language: true
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Update language
+                        if (data.detected_language) {
+                            this.currentLanguage = data.detected_language.toUpperCase();
+                            this.updateLanguageBadge(this.currentLanguage);
+                        }
+                        
+                        this.displayMessage(data.response_text, 'assistant');
+                        
+                        // Play audio response
+                        this.updateStatus('AI responding...', 'speaking');
+                        this.isSpeaking = true;
+                        
+                        if (data.audio_url) {
+                            await this.playAudio(data.audio_url);
+                        }
+                        
+                        this.isSpeaking = false;
+                        
+                        // Resume listening
+                        if (this.continuousListening && !this.isPaused) {
+                            this.updateStatus('Listening continuously...', 'listening');
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ Text query error:', error);
+                    this.displayMessage('Sorry, I encountered an error.', 'assistant');
+                } finally {
+                    this.isProcessing = false;
+                }
+            }
+
+            // Pause continuous listening
+            pauseListening() {
+                this.isPaused = !this.isPaused;
+                const pauseBtn = document.getElementById('pauseBtn');
+                
+                if (this.isPaused) {
+                    this.updateStatus('Listening paused. Click resume to continue.', 'ready');
+                    this.updateVoiceIndicator(false);
+                    pauseBtn.textContent = '▶️ Resume';
+                } else {
+                    this.updateStatus('Listening continuously...', 'listening');
+                    this.updateVoiceIndicator(true);
+                    pauseBtn.textContent = '⏸️ Pause Listening';
+                }
+            }
+
+            // Stop assistant completely
+            stopAssistant() {
+                this.continuousListening = false;
+                this.isPaused = false;
+                this.isProcessing = false;
+                this.isSpeaking = false;
+                
+                if (this.audioContext) {
+                    this.audioContext.close();
+                }
+                
+                this.updateStatus('Voice assistant stopped.', 'ready');
+                this.updateVoiceIndicator(false);
+                
+                // Reset UI
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('startBtn').textContent = '🎤 Start Voice Assistant';
+                document.getElementById('pauseBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = true;
+            }
+
+            // Play audio
+            async playAudio(audioUrl) {
+                return new Promise((resolve) => {
+                    try {
+                        const audio = new Audio(`${this.baseUrl}${audioUrl}`);
+                        audio.onended = resolve;
+                        audio.onerror = resolve;
+                        audio.play().catch(resolve);
+                    } catch (error) {
+                        resolve();
+                    }
+                });
+            }
+
+            // Utility functions
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            updateStatus(message, type) {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = message;
+                statusEl.className = `status ${type}`;
+            }
+
+            updateLanguageBadge(language) {
+                const badge = document.getElementById('languageBadge');
+                const langNames = { 'EN': 'English', 'HI': 'Hindi', 'PA': 'Punjabi' };
+                badge.textContent = langNames[language] || language;
+            }
+
+            updateVoiceIndicator(active) {
+                const indicator = document.getElementById('voiceIndicator');
+                if (active) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            }
+
+            displayMessage(text, sender) {
+                const messagesContainer = document.getElementById('messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                messageDiv.textContent = text;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+
+        // Initialize Continuous Voice Assistant
+        const assistant = new ContinuousVoiceAssistant();
+        
+        // Event Listeners
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            await assistant.startVoiceAssistant();
+        });
+        
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            assistant.pauseListening();
+        });
+        
+        document.getElementById('stopBtn').addEventListener('click', () => {
+            assistant.stopAssistant();
+        });
+        
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            const textInput = document.getElementById('textInput');
+            const text = textInput.value.trim();
+            
+            if (text && assistant.isInitialized) {
+                textInput.value = '';
+                await assistant.processTextQuery(text);
+            }
+        });
+        
+        document.getElementById('textInput').addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('sendBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

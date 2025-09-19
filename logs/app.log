@@ -1,0 +1,222 @@
+2025-09-19 20:50:11,871 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:50:12,238 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:50:19,985 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:52:16,467 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:52:17,833 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:52:34,021 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 20:52:34,475 - watchfiles.main - INFO - 16 changes detected
+2025-09-19 20:52:37,859 - watchfiles.main - INFO - 6 changes detected
+2025-09-19 20:52:38,225 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:52:41,109 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:57:07,730 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:57:09,191 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 20:57:10,001 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 20:57:14,236 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:57:16,005 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 20:57:16,951 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:57:21,606 - watchfiles.main - INFO - 1 change detected
+2025-09-19 20:57:35,115 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 20:57:35,569 - watchfiles.main - INFO - 16 changes detected
+2025-09-19 20:57:39,036 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 20:57:39,037 - main - INFO - Version: 1.2.0
+2025-09-19 20:57:39,037 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 20:57:39,037 - main - INFO - Debug Mode: True
+2025-09-19 20:57:39,038 - main - INFO - Gemini API: Configured
+2025-09-19 20:57:39,038 - main - INFO - Location Conversion: Enabled
+2025-09-19 20:57:39,039 - main - INFO - TTS Engine: edge_tts
+2025-09-19 20:57:39,039 - main - INFO - STT Engine: vosk
+2025-09-19 20:57:39,039 - main - INFO - Languages: en, hi, pa
+2025-09-19 20:57:39,039 - main - INFO - Bus data fetcher initialized
+2025-09-19 20:57:39,040 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 20:57:39,040 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 20:57:39,142 - watchfiles.main - INFO - 7 changes detected
+2025-09-19 20:58:12,438 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:00:58,130 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:00:58,302 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:00:58,303 - main - INFO - Bus data fetcher closed
+2025-09-19 21:00:58,304 - main - INFO - Temporary files cleaned up
+2025-09-19 21:00:58,305 - main - INFO - AI Bus Assistant API Stopped
+2025-09-19 21:00:59,357 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:00:59,719 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:03:47,634 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:03:51,830 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:03:53,313 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:04:06,446 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:04:07,261 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:04:07,721 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:04:09,083 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:04:10,909 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:04:19,697 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:04:20,503 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:04:34,671 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:05:14,723 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:05:16,032 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:05:22,159 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:08:32,098 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:39,754 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:40,658 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:41,270 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:09:45,362 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:45,919 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:46,777 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:47,187 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:09:50,470 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:54,979 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:55,868 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:09:56,379 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:09:59,720 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:02,913 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:03,743 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:08,093 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:19,278 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:20,206 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:24,144 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:29,416 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:30,323 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:30,730 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:10:33,857 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:10:36,002 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 21:10:36,003 - main - INFO - Version: 1.2.0
+2025-09-19 21:10:36,003 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 21:10:36,003 - main - INFO - Debug Mode: True
+2025-09-19 21:10:36,004 - main - INFO - Gemini API: Configured
+2025-09-19 21:10:36,004 - main - INFO - Location Conversion: Enabled
+2025-09-19 21:10:36,004 - main - INFO - TTS Engine: edge_tts
+2025-09-19 21:10:36,004 - main - INFO - STT Engine: vosk
+2025-09-19 21:10:36,004 - main - INFO - Languages: en, hi, pa
+2025-09-19 21:10:36,005 - main - INFO - Bus data fetcher initialized
+2025-09-19 21:10:36,005 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 21:10:36,005 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 21:10:36,084 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:10:45,584 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:56,513 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:10:56,708 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:10:56,708 - main - INFO - Bus data fetcher closed
+2025-09-19 21:10:56,711 - main - INFO - Temporary files cleaned up
+2025-09-19 21:10:56,711 - main - INFO - AI Bus Assistant API Stopped
+2025-09-19 21:10:57,528 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:10:57,987 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:10:59,157 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:11:02,125 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 21:11:02,126 - main - INFO - Version: 1.2.0
+2025-09-19 21:11:02,126 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 21:11:02,126 - main - INFO - Debug Mode: True
+2025-09-19 21:11:02,127 - main - INFO - Gemini API: Configured
+2025-09-19 21:11:02,127 - main - INFO - Location Conversion: Enabled
+2025-09-19 21:11:02,127 - main - INFO - TTS Engine: edge_tts
+2025-09-19 21:11:02,127 - main - INFO - STT Engine: vosk
+2025-09-19 21:11:02,128 - main - INFO - Languages: en, hi, pa
+2025-09-19 21:11:02,128 - main - INFO - Bus data fetcher initialized
+2025-09-19 21:11:02,128 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 21:11:02,128 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 21:11:02,194 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:04,670 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:04,849 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:11:04,849 - main - INFO - Bus data fetcher closed
+2025-09-19 21:11:04,851 - main - INFO - Temporary files cleaned up
+2025-09-19 21:11:04,851 - main - INFO - AI Bus Assistant API Stopped
+2025-09-19 21:11:05,715 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:11:06,325 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:07,287 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:11:09,928 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 21:11:09,929 - main - INFO - Version: 1.2.0
+2025-09-19 21:11:09,929 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 21:11:09,929 - main - INFO - Debug Mode: True
+2025-09-19 21:11:09,931 - main - INFO - Gemini API: Configured
+2025-09-19 21:11:09,932 - main - INFO - Location Conversion: Enabled
+2025-09-19 21:11:09,932 - main - INFO - TTS Engine: edge_tts
+2025-09-19 21:11:09,932 - main - INFO - STT Engine: vosk
+2025-09-19 21:11:09,933 - main - INFO - Languages: en, hi, pa
+2025-09-19 21:11:09,933 - main - INFO - Bus data fetcher initialized
+2025-09-19 21:11:09,933 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 21:11:09,933 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 21:11:10,063 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:11:19,372 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:11:19,509 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:11:19,509 - main - INFO - Bus data fetcher closed
+2025-09-19 21:11:19,511 - main - INFO - Temporary files cleaned up
+2025-09-19 21:11:19,512 - main - INFO - AI Bus Assistant API Stopped
+2025-09-19 21:11:20,266 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:11:20,726 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:21,885 - watchfiles.main - INFO - 5 changes detected
+2025-09-19 21:11:22,770 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 21:11:22,771 - main - INFO - Version: 1.2.0
+2025-09-19 21:11:22,771 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 21:11:22,771 - main - INFO - Debug Mode: True
+2025-09-19 21:11:22,772 - main - INFO - Gemini API: Configured
+2025-09-19 21:11:22,772 - main - INFO - Location Conversion: Enabled
+2025-09-19 21:11:22,772 - main - INFO - TTS Engine: edge_tts
+2025-09-19 21:11:22,773 - main - INFO - STT Engine: vosk
+2025-09-19 21:11:22,773 - main - INFO - Languages: en, hi, pa
+2025-09-19 21:11:22,773 - main - INFO - Bus data fetcher initialized
+2025-09-19 21:11:22,773 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 21:11:22,773 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 21:11:22,849 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:25,124 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:11:36,068 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:11:36,184 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:11:36,185 - main - INFO - Bus data fetcher closed
+2025-09-19 21:11:36,188 - main - INFO - Temporary files cleaned up
+2025-09-19 21:11:36,189 - main - INFO - AI Bus Assistant API Stopped
+2025-09-19 21:11:36,817 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:11:37,224 - watchfiles.main - INFO - 7 changes detected
+2025-09-19 21:11:39,509 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 21:11:39,509 - main - INFO - Version: 1.2.0
+2025-09-19 21:11:39,510 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 21:11:39,510 - main - INFO - Debug Mode: True
+2025-09-19 21:11:39,511 - main - INFO - Gemini API: Configured
+2025-09-19 21:11:39,511 - main - INFO - Location Conversion: Enabled
+2025-09-19 21:11:39,511 - main - INFO - TTS Engine: edge_tts
+2025-09-19 21:11:39,512 - main - INFO - STT Engine: vosk
+2025-09-19 21:11:39,512 - main - INFO - Languages: en, hi, pa
+2025-09-19 21:11:39,512 - main - INFO - Bus data fetcher initialized
+2025-09-19 21:11:39,512 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 21:11:39,512 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 21:11:39,594 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:42,890 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:11:43,103 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:11:43,104 - main - INFO - Bus data fetcher closed
+2025-09-19 21:11:43,106 - main - INFO - Temporary files cleaned up
+2025-09-19 21:11:43,107 - main - INFO - AI Bus Assistant API Stopped
+2025-09-19 21:11:43,792 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:11:44,302 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:46,634 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 21:11:46,634 - main - INFO - Version: 1.2.0
+2025-09-19 21:11:46,635 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 21:11:46,635 - main - INFO - Debug Mode: True
+2025-09-19 21:11:46,636 - main - INFO - Gemini API: Configured
+2025-09-19 21:11:46,636 - main - INFO - Location Conversion: Enabled
+2025-09-19 21:11:46,637 - main - INFO - TTS Engine: edge_tts
+2025-09-19 21:11:46,637 - main - INFO - STT Engine: vosk
+2025-09-19 21:11:46,638 - main - INFO - Languages: en, hi, pa
+2025-09-19 21:11:46,638 - main - INFO - Bus data fetcher initialized
+2025-09-19 21:11:46,639 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 21:11:46,639 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 21:11:46,729 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:49,820 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:11:50,377 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:11:50,560 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:11:50,562 - main - INFO - Bus data fetcher closed
+2025-09-19 21:11:50,566 - main - INFO - Temporary files cleaned up
+2025-09-19 21:11:50,566 - main - INFO - AI Bus Assistant API Stopped
+2025-09-19 21:11:51,378 - watchfiles.main - INFO - 3 changes detected
+2025-09-19 21:11:51,792 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:53,839 - main - INFO - AI Bus Assistant API Starting...
+2025-09-19 21:11:53,840 - main - INFO - Version: 1.2.0
+2025-09-19 21:11:53,840 - main - INFO - Host: 0.0.0.0:8000
+2025-09-19 21:11:53,840 - main - INFO - Debug Mode: True
+2025-09-19 21:11:53,841 - main - INFO - Gemini API: Configured
+2025-09-19 21:11:53,841 - main - INFO - Location Conversion: Enabled
+2025-09-19 21:11:53,841 - main - INFO - TTS Engine: edge_tts
+2025-09-19 21:11:53,842 - main - INFO - STT Engine: vosk
+2025-09-19 21:11:53,842 - main - INFO - Languages: en, hi, pa
+2025-09-19 21:11:53,842 - main - INFO - Bus data fetcher initialized
+2025-09-19 21:11:53,842 - main - INFO - AI Bus Assistant API Ready
+2025-09-19 21:11:53,842 - main - INFO - API Documentation: http://0.0.0.0:8000/docs
+2025-09-19 21:11:53,915 - watchfiles.main - INFO - 2 changes detected
+2025-09-19 21:11:55,191 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:12:00,240 - watchfiles.main - INFO - 1 change detected
+2025-09-19 21:12:00,370 - main - INFO - AI Bus Assistant API Shutting Down...
+2025-09-19 21:12:00,371 - main - INFO - Bus data fetcher closed
+2025-09-19 21:12:00,374 - main - INFO - Temporary files cleaned up
+2025-09-19 21:12:00,374 - main - INFO - AI Bus Assistant API Stopped

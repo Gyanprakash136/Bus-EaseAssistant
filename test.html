@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bus Assistant - Continuous Voice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .ai-assistant {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-assistant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64ffda, #667eea, #764ba2, #64ffda);
+            background-size: 300% 100%;
+            animation: gradient-flow 4s ease infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 300% 0; }
+            100% { background-position: -300% 0; }
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #64ffda, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #8892b0;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        /* Main Voice Orb */
+        .voice-orb-container {
+            position: relative;
+            margin: 50px auto;
+            width: 250px;
+            height: 250px;
+        }
+
+        .voice-orb {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #64ffda, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(100, 255, 218, 0.3);
+        }
+
+        .voice-orb:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 70px rgba(100, 255, 218, 0.5);
+        }
+
+        .voice-orb.active {
+            animation: continuous-pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 100px rgba(100, 255, 218, 0.7);
+        }
+
+        .voice-orb.listening {
+            animation: listening-breath 1.5s ease-in-out infinite;
+            background: radial-gradient(circle at 30% 30%, #64ffda, #00e676);
+            box-shadow: 0 0 80px rgba(100, 255, 218, 0.8);
+        }
+
+        .voice-orb.processing {
+            animation: processing-glow 1s ease-in-out infinite alternate;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #ff9800);
+        }
+
+        .voice-orb.speaking {
+            animation: speaking-wave 0.6s ease-in-out infinite alternate;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #e91e63);
+        }
+
+        @keyframes continuous-pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 100px rgba(100, 255, 218, 0.7);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 120px rgba(100, 255, 218, 0.9);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 100px rgba(100, 255, 218, 0.7);
+            }
+        }
+
+        @keyframes listening-breath {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes processing-glow {
+            0% {
+                box-shadow: 0 0 80px rgba(255, 215, 0, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 120px rgba(255, 152, 0, 0.9);
+            }
+        }
+
+        @keyframes speaking-wave {
+            0% {
+                transform: scale(1) rotate(-1deg);
+            }
+            100% {
+                transform: scale(1.06) rotate(1deg);
+            }
+        }
+
+        .voice-icon {
+            font-size: 64px;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(100, 255, 218, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .particle.active {
+            animation: particle-float 3s ease-in-out infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Status Display */
+        .status-container {
+            margin: 40px 0;
+            min-height: 80px;
+        }
+
+        .main-status {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            min-height: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .main-status.idle {
+            color: #64ffda;
+        }
+
+        .main-status.listening {
+            color: #00e676;
+            animation: text-glow 1.5s ease-in-out infinite;
+        }
+
+        .main-status.processing {
+            color: #ffd700;
+        }
+
+        .main-status.speaking {
+            color: #ff6b6b;
+        }
+
+        @keyframes text-glow {
+            0%, 100% {
+                text-shadow: 0 0 10px currentColor;
+            }
+            50% {
+                text-shadow: 0 0 20px currentColor;
+            }
+        }
+
+        .sub-status {
+            color: #8892b0;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        /* Conversation Display */
+        .conversation-display {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .conversation-message {
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 15px;
+            position: relative;
+            animation: message-slide-in 0.3s ease;
+        }
+
+        @keyframes message-slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .conversation-message.user {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(102, 126, 234, 0.1));
+            border-left: 4px solid #667eea;
+            margin-left: 30px;
+        }
+
+        .conversation-message.ai {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.2), rgba(100, 255, 218, 0.1));
+            border-left: 4px solid #64ffda;
+            margin-right: 30px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .message-sender.user {
+            color: #667eea;
+        }
+
+        .message-sender.ai {
+            color: #64ffda;
+        }
+
+        .message-lang {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #8892b0;
+        }
+
+        .message-text {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #e6e6e6;
+        }
+
+        .interim-text {
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(135deg, #64ffda, #667eea);
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+        }
+
+        .control-btn.danger {
+            background: linear-gradient(135deg, #ff6b6b, #e91e63);
+        }
+
+        .control-btn.danger:hover {
+            background: linear-gradient(135deg, #ff5252, #c2185b);
+        }
+
+        /* Connection Indicator */
+        .connection-indicator {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .connection-indicator.connected {
+            background: rgba(100, 255, 218, 0.2);
+            color: #64ffda;
+        }
+
+        .connection-indicator.disconnected {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            color: #64ffda;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .instructions ul {
+            color: #a8b2d1;
+            line-height: 1.6;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        /* Error Display */
+        .error-display {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            color: #ff6b6b;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .error-display.show {
+            display: block;
+            animation: message-slide-in 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .ai-assistant {
+                padding: 30px 25px;
+                margin: 15px;
+            }
+            
+            .voice-orb {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .voice-orb-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .voice-icon {
+                font-size: 48px;
+            }
+            
+            .main-status {
+                font-size: 20px;
+            }
+            
+            .conversation-display {
+                padding: 20px;
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Connection Indicator -->
+    <div class="connection-indicator" id="connectionIndicator">🔴 Connecting...</div>
+
+    <div class="ai-assistant">
+        <div class="header">
+            <h1>🤖 AI Bus Assistant</h1>
+            <p>Click once to start continuous voice conversation</p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>💡 How it works:</h3>
+            <ul>
+                <li><strong>Click the orb once</strong> → Start continuous conversation mode</li>
+                <li><strong>Speak naturally</strong> → AI listens, processes, and responds automatically</li>
+                <li><strong>Keep talking</strong> → After AI responds, it automatically listens for your next question</li>
+                <li><strong>Click stop</strong> → End the conversation when done</li>
+            </ul>
+        </div>
+
+        <!-- Main Voice Orb -->
+        <div class="voice-orb-container">
+            <div class="voice-orb" id="voiceOrb" onclick="toggleContinuousMode()">
+                <div class="voice-icon" id="voiceIcon">🎤</div>
+            </div>
+        </div>
+
+        <!-- Status Display -->
+        <div class="status-container">
+            <div class="main-status idle" id="mainStatus">
+                Click the orb to start continuous conversation
+            </div>
+            <div class="sub-status" id="subStatus">
+                Your AI bus assistant is ready to help
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div class="error-display" id="errorDisplay"></div>
+
+        <!-- Conversation Display -->
+        <div class="conversation-display" id="conversationDisplay">
+            <div class="conversation-message ai">
+                <div class="message-header">
+                    <span class="message-sender ai">AI Assistant</span>
+                    <span class="message-lang">EN</span>
+                </div>
+                <div class="message-text">
+                    Welcome! I'm your AI bus assistant. Click the orb above to start our conversation. I'll help you with bus information in English, Hindi, or Punjabi!
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <button class="control-btn" id="toggleBtn" onclick="toggleContinuousMode()" title="Start/Stop Conversation">
+                🎤
+            </button>
+            <button class="control-btn" id="muteBtn" onclick="toggleMute()" title="Mute/Unmute AI Voice">
+                🔊
+            </button>
+            <button class="control-btn danger" onclick="stopAllActivity()" title="Stop Everything">
+                ⏹️
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE_URL = 'http://localhost:8000';
+        
+        // State Management
+        let isContinuousMode = false;
+        let isListening = false;
+        let isProcessing = false;
+        let isSpeaking = false;
+        let isMuted = false;
+        let currentAudio = null;
+        let recognition = null;
+        let sessionId = 'continuous_' + Date.now();
+        let conversationActive = false;
+
+        // Speech Recognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeContinuousAI();
+        });
+
+        async function initializeContinuousAI() {
+            console.log('🚀 Continuous AI Assistant Started');
+            
+            // Test backend connection
+            await testConnection();
+            
+            // Setup speech recognition
+            setupContinuousSpeechRecognition();
+            
+            // Start conversation session
+            await startConversationSession();
+            
+            updateMainStatus('Ready for continuous conversation!', 'idle');
+            updateSubStatus('Click the orb to begin');
+            
+            console.log('✅ Continuous AI Ready');
+        }
+
+        async function testConnection() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                if (response.ok) {
+                    updateConnectionStatus(true);
+                } else {
+                    throw new Error('Backend not responding');
+                }
+            } catch (error) {
+                updateConnectionStatus(false);
+                showError('Backend API not accessible. Please ensure your server is running.');
+            }
+        }
+
+        function setupContinuousSpeechRecognition() {
+            if (!SpeechRecognition) {
+                showError('Speech recognition not supported. Please use Chrome browser.');
+                return;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;  // We'll manage continuity manually
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = function() {
+                console.log('🎤 Voice recognition started');
+                isListening = true;
+                updateVoiceOrb('listening');
+                updateMainStatus('Listening... speak now', 'listening');
+                updateSubStatus('I can hear you, go ahead');
+                createParticleEffect();
+            };
+
+            recognition.onresult = function(event) {
+                let finalTranscript = '';
+                let interimTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                // Show interim results
+                if (interimTranscript) {
+                    showInterimMessage(interimTranscript);
+                }
+
+                // Process final transcript
+                if (finalTranscript.trim()) {
+                    console.log('🗣️ User said:', finalTranscript);
+                    hideInterimMessage();
+                    addConversationMessage('user', finalTranscript, 'AUTO');
+                    processUserSpeech(finalTranscript.trim());
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error('❌ Speech recognition error:', event.error);
+                
+                if (event.error === 'no-speech') {
+                    if (isContinuousMode) {
+                        updateMainStatus('No speech detected, listening again...', 'listening');
+                        setTimeout(() => {
+                            if (isContinuousMode && !isProcessing && !isSpeaking) {
+                                startListening();
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    showError(`Speech recognition error: ${event.error}`);
+                    if (isContinuousMode && event.error !== 'aborted') {
+                        setTimeout(() => {
+                            if (isContinuousMode) {
+                                startListening();
+                            }
+                        }, 2000);
+                    }
+                }
+            };
+
+            recognition.onend = function() {
+                console.log('🎤 Speech recognition ended');
+                isListening = false;
+                
+                // If in continuous mode and not processing/speaking, restart listening
+                if (isContinuousMode && !isProcessing && !isSpeaking) {
+                    setTimeout(() => {
+                        if (isContinuousMode && !isProcessing && !isSpeaking) {
+                            startListening();
+                        }
+                    }, 500);
+                }
+            };
+        }
+
+        async function startConversationSession() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/conversation/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        client_id: sessionId,
+                        language: 'auto'
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Conversation session started');
+                }
+            } catch (error) {
+                console.error('❌ Session start error:', error);
+            }
+        }
+
+        // Main Function - Toggle Continuous Mode
+        function toggleContinuousMode() {
+            if (isContinuousMode) {
+                stopContinuousMode();
+            } else {
+                startContinuousMode();
+            }
+        }
+
+        function startContinuousMode() {
+            if (!recognition) {
+                showError('Speech recognition not available');
+                return;
+            }
+
+            isContinuousMode = true;
+            conversationActive = true;
+            
+            updateVoiceOrb('active');
+            updateMainStatus('Continuous mode activated!', 'listening');
+            updateSubStatus('Starting to listen...');
+            
+            const toggleBtn = document.getElementById('toggleBtn');
+            toggleBtn.classList.add('active');
+            toggleBtn.innerHTML = '🔴';
+            
+            clearError();
+            
+            // Start listening
+            setTimeout(() => {
+                if (isContinuousMode) {
+                    startListening();
+                }
+            }, 1000);
+            
+            console.log('✅ Continuous mode started');
+        }
+
+        function stopContinuousMode() {
+            isContinuousMode = false;
+            conversationActive = false;
+            
+            // Stop all activities
+            if (recognition && isListening) {
+                recognition.stop();
+            }
+            
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            
+            // Reset states
+            isListening = false;
+            isProcessing = false;
+            isSpeaking = false;
+            
+            updateVoiceOrb('idle');
+            updateMainStatus('Continuous mode stopped', 'idle');
+            updateSubStatus('Click to start again');
+            
+            const toggleBtn = document.getElementById('toggleBtn');
+            toggleBtn.classList.remove('active');
+            toggleBtn.innerHTML = '🎤';
+            
+            console.log('⏹️ Continuous mode stopped');
+        }
+
+        function startListening() {
+            if (!isContinuousMode || isListening || isProcessing || isSpeaking) return;
+            
+            try {
+                recognition.lang = 'en-US';  // Backend handles language detection
+                recognition.start();
+            } catch (error) {
+                console.error('❌ Start listening error:', error);
+                if (isContinuousMode) {
+                    setTimeout(() => {
+                        if (isContinuousMode) {
+                            startListening();
+                        }
+                    }, 2000);
+                }
+            }
+        }
+
+        async function processUserSpeech(text) {
+            if (isProcessing) return;
+            
+            isProcessing = true;
+            updateVoiceOrb('processing');
+            updateMainStatus('AI is thinking...', 'processing');
+            updateSubStatus('Processing your request');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/voice/query`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        detect_language: true
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ AI Response:', data);
+                    
+                    const responseText = data.response_text || data.response;
+                    const detectedLang = data.detected_language || 'auto';
+                    
+                    // Add AI response to conversation
+                    addConversationMessage('ai', responseText, detectedLang.toUpperCase());
+                    
+                    // Play AI voice response
+                    if (data.audio_url && !isMuted) {
+                        await playAIResponse(data.audio_url);
+                    } else {
+                        // If muted or no audio, continue listening immediately
+                        isProcessing = false;
+                        if (isContinuousMode) {
+                            updateMainStatus('Ready for your next question', 'listening');
+                            updateSubStatus('Listening continuously...');
+                            setTimeout(() => {
+                                if (isContinuousMode && !isProcessing && !isSpeaking) {
+                                    startListening();
+                                }
+                            }, 1000);
+                        }
+                    }
+                    
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.detail || `HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.error('❌ Process speech error:', error);
+                showError('Failed to process your request. Continuing to listen...');
+                addConversationMessage('ai', 'Sorry, I had trouble understanding that. Please try again.', 'EN');
+                
+                isProcessing = false;
+                
+                // Continue listening even after error
+                if (isContinuousMode) {
+                    setTimeout(() => {
+                        if (isContinuousMode && !isProcessing && !isSpeaking) {
+                            startListening();
+                        }
+                    }, 2000);
+                }
+            }
+        }
+
+        async function playAIResponse(audioUrl) {
+            return new Promise((resolve) => {
+                try {
+                    isSpeaking = true;
+                    updateVoiceOrb('speaking');
+                    updateMainStatus('AI is speaking...', 'speaking');
+                    updateSubStatus('Playing response');
+                    
+                    if (currentAudio) {
+                        currentAudio.pause();
+                    }
+                    
+                    currentAudio = new Audio(`${API_BASE_URL}${audioUrl}`);
+                    
+                    currentAudio.onended = () => {
+                        console.log('🔊 Audio playback finished');
+                        isSpeaking = false;
+                        isProcessing = false;
+                        currentAudio = null;
+                        
+                        // Automatically continue listening in continuous mode
+                        if (isContinuousMode) {
+                            updateMainStatus('Ready for your next question', 'listening');
+                            updateSubStatus('Listening for your next question...');
+                            setTimeout(() => {
+                                if (isContinuousMode && !isProcessing && !isSpeaking) {
+                                    startListening();
+                                }
+                            }, 1000);
+                        } else {
+                            updateVoiceOrb('idle');
+                            updateMainStatus('Ready', 'idle');
+                            updateSubStatus('Click to continue');
+                        }
+                        
+                        resolve();
+                    };
+                    
+                    currentAudio.onerror = () => {
+                        console.error('❌ Audio playback error');
+                        isSpeaking = false;
+                        isProcessing = false;
+                        currentAudio = null;
+                        
+                        if (isContinuousMode) {
+                            setTimeout(() => {
+                                if (isContinuousMode && !isProcessing && !isSpeaking) {
+                                    startListening();
+                                }
+                            }, 1000);
+                        }
+                        
+                        resolve();
+                    };
+                    
+                    currentAudio.play().catch(error => {
+                        console.warn('⚠️ Audio autoplay blocked:', error);
+                        showError('Audio blocked. Enable autoplay for better experience.');
+                        isSpeaking = false;
+                        isProcessing = false;
+                        
+                        if (isContinuousMode) {
+                            setTimeout(() => {
+                                if (isContinuousMode && !isProcessing && !isSpeaking) {
+                                    startListening();
+                                }
+                            }, 1000);
+                        }
+                        
+                        resolve();
+                    });
+                    
+                } catch (error) {
+                    console.error('❌ Audio playback error:', error);
+                    isSpeaking = false;
+                    isProcessing = false;
+                    resolve();
+                }
+            });
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('muteBtn');
+            
+            if (isMuted) {
+                muteBtn.innerHTML = '🔇';
+                muteBtn.classList.add('active');
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio = null;
+                    isSpeaking = false;
+                    if (isContinuousMode && !isProcessing) {
+                        setTimeout(() => {
+                            if (isContinuousMode && !isProcessing && !isSpeaking) {
+                                startListening();
+                            }
+                        }, 500);
+                    }
+                }
+            } else {
+                muteBtn.innerHTML = '🔊';
+                muteBtn.classList.remove('active');
+            }
+        }
+
+        function stopAllActivity() {
+            stopContinuousMode();
+            clearError();
+            updateMainStatus('All activities stopped', 'idle');
+            updateSubStatus('Click the orb to restart');
+        }
+
+        // UI Update Functions
+        function updateVoiceOrb(state) {
+            const orb = document.getElementById('voiceOrb');
+            const icon = document.getElementById('voiceIcon');
+            
+            orb.className = 'voice-orb';
+            
+            switch (state) {
+                case 'active':
+                    orb.classList.add('active');
+                    icon.innerHTML = '🤖';
+                    break;
+                case 'listening':
+                    orb.classList.add('listening');
+                    icon.innerHTML = '🎤';
+                    break;
+                case 'processing':
+                    orb.classList.add('processing');
+                    icon.innerHTML = '🧠';
+                    break;
+                case 'speaking':
+                    orb.classList.add('speaking');
+                    icon.innerHTML = '🗣️';
+                    break;
+                case 'idle':
+                default:
+                    icon.innerHTML = '🎤';
+                    break;
+            }
+        }
+
+        function updateMainStatus(text, type) {
+            const statusEl = document.getElementById('mainStatus');
+            statusEl.textContent = text;
+            statusEl.className = `main-status ${type}`;
+        }
+
+        function updateSubStatus(text) {
+            document.getElementById('subStatus').textContent = text;
+        }
+
+        function addConversationMessage(sender, text, language) {
+            const display = document.getElementById('conversationDisplay');
+            
+            const messageEl = document.createElement('div');
+            messageEl.className = `conversation-message ${sender}`;
+            
+            messageEl.innerHTML = `
+                <div class="message-header">
+                    <span class="message-sender ${sender}">${sender === 'user' ? 'You' : 'AI Assistant'}</span>
+                    <span class="message-lang">${language}</span>
+                </div>
+                <div class="message-text">${text}</div>
+            `;
+            
+            display.appendChild(messageEl);
+            
+            // Keep only last 10 messages
+            const messages = display.querySelectorAll('.conversation-message');
+            if (messages.length > 10) {
+                messages[0].remove();
+            }
+            
+            // Scroll to bottom
+            display.scrollTop = display.scrollHeight;
+        }
+
+        function showInterimMessage(text) {
+            const display = document.getElementById('conversationDisplay');
+            
+            // Remove existing interim message
+            const existingInterim = display.querySelector('.interim-message');
+            if (existingInterim) {
+                existingInterim.remove();
+            }
+            
+            // Add new interim message
+            const messageEl = document.createElement('div');
+            messageEl.className = 'conversation-message user interim-message';
+            messageEl.innerHTML = `
+                <div class="message-header">
+                    <span class="message-sender user">You</span>
+                    <span class="message-lang">...</span>
+                </div>
+                <div class="message-text interim-text">${text}</div>
+            `;
+            
+            display.appendChild(messageEl);
+            display.scrollTop = display.scrollHeight;
+        }
+
+        function hideInterimMessage() {
+            const interimEl = document.querySelector('.interim-message');
+            if (interimEl) {
+                interimEl.remove();
+            }
+        }
+
+        function createParticleEffect() {
+            const container = document.querySelector('.voice-orb-container');
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle active';
+                    particle.style.left = Math.random() * 250 + 'px';
+                    particle.style.top = Math.random() * 250 + 'px';
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 3000);
+                }, i * 200);
+            }
+        }
+
+        function updateConnectionStatus(connected) {
+            const indicator = document.getElementById('connectionIndicator');
+            if (connected) {
+                indicator.className = 'connection-indicator connected';
+                indicator.textContent = '🟢 Connected';
+            } else {
+                indicator.className = 'connection-indicator disconnected';
+                indicator.textContent = '🔴 Disconnected';
+            }
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('errorDisplay');
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+            
+            setTimeout(() => {
+                errorEl.classList.remove('show');
+            }, 5000);
+        }
+
+        function clearError() {
+            document.getElementById('errorDisplay').classList.remove('show');
+        }
+
+        // Auto-initialize
+        window.addEventListener('load', function() {
+            console.log('🎤 Continuous AI Assistant Ready!');
+        });
+    </script>
+</body>
+</html>

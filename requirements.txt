@@ -1,23 +1,48 @@
-# Core Framework
+# =============================================================================
+# Bus-EaseAssistant - AI Voice-Powered Bus Tracking System
+# Production-Ready Dependencies for Python 3.8+
+# All 7/7 Components Supported
+# =============================================================================
+
+# Core Framework & API
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
 
-# HTTP Client
+# HTTP Clients & Async Communication
 aiohttp>=3.9.0
+httpx>=0.25.0
 requests>=2.31.0
+websockets>=11.0.0
 
-# Audio Processing (Python 3.13 compatible)
+# Audio Processing Pipeline (Complete Voice Support)
 edge-tts>=6.1.0
+pydub>=0.25.1
+soundfile>=0.12.1
+numpy>=1.24.0
+scipy>=1.11.0
 
-# Speech Recognition (Optional)
+# Speech Recognition (Offline Vosk Engine)
 vosk>=0.3.45
 
-# AI/ML
+# AI & Machine Learning
 google-generativeai>=0.3.0
 
-# Utilities
+# File Handling & I/O
 python-multipart>=0.0.6
+aiofiles>=23.2.0
 python-dotenv>=1.0.0
 
-# Production
+# Data Processing & Utilities
+orjson>=3.9.0
+python-dateutil>=2.8.2
+
+# Logging & Monitoring
+structlog>=23.0.0
+
+# Production Server
 gunicorn>=21.2.0
+
+# Security & Encryption
+cryptography>=41.0.0

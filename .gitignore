@@ -2,70 +2,41 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual Environment
 venv/
+.venv/
 env/
 ENV/
-.venv/
 
 # Environment Variables
 .env
 .env.local
-.env.production
 
-# AI Models (large files - don't upload to GitHub)
-models/vosk-model-*/
-models/*.model
-models/*.bin
-models/*.gz
+# AI Models (DON'T upload these - they're huge!)
+models/
+*.model
+*.bin
+*.gz
 
-# Audio Files
+# Logs (don't upload log files)
+logs/
+*.log
+
+# Audio files (generated content)
 static/audio/*.wav
 static/audio/*.mp3
 temp/
 audio_temp/
 
-# Logs
-logs/
-*.log
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # Cache
 .cache/
 cache/
-temp/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Database
-*.db
-*.sqlite3
-
-# Coverage
-htmlcov/
-.coverage
